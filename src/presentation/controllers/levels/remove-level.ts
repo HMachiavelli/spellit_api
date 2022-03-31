@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-export class GetLevelsController {
+export class RemoveLevelController {
   constructor(
     private readonly validation: any,
     private readonly addSurvey: any

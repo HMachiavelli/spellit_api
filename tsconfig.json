@@ -15,37 +15,33 @@
       "rootDir": "./src",
       "baseUrl": "./src",
       "paths": {
-        "@gateways/*": [
-            "src/data/gateways/*"
+        "@/gateways/*": [
+          "../src/data/gateways/*"
         ],
-        "@usecases/*": [
-          "src/domain/usecases/*"
+        "@/factories/*": [
+          "../src/data/factories/*"
         ],
-        "@entities/*": [
-          "src/domain/entities/*"
+        "@/usecases/*": [
+          "../src/domain/usecases/*"
         ],
-        "@repositories/*": [
-          "src/infra/db/repositories/*"
+        "@/entities/*": [
+          "../src/domain/entities/*"
         ],
-        "@models/*": [
-          "src/infra/db/models/*"
+        "@/repositories/*": [
+          "../src/infra/db/repositories/*"
         ],
-        "@controllers/*": [
-          "src/presentation/controllers/*"
+        "@/models/*": [
+          "../src/infra/db/models/*"
         ],
-        "@errors/*": [
-          "src/presentation/errors/*"
+        "@/controllers/*": [
+          "../src/presentation/controllers/*"
+        ],
+        "@/errors/*": [
+          "../src/presentation/errors/*"
         ]
       }
     },
     "compileOnSave": true,
-    "include": [
-      "./src/**/*.ts",
-      "./src/**/*.js",
-      "./src/**/*.json"
-    ],
-    "exclude": [
-      "./src/infra/config/git-ignored/**/*"
-    ]
+    "include": ["./src"]
   }
   
