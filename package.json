@@ -5,17 +5,36 @@
   "author": "Henrique Machiavelli",
   "scripts": {
     "start": "node dist/infra/http/server.js",
-    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
+    "debug": "nodemon --watch \"src/\" --exec \"npm run build && npm start\"",
     "build": "rimraf dist && tsc -p tsconfig-build.json"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/express-jsonschema": "^1.1.1",
+    "@types/glob": "^7.2.0",
+    "@types/joi": "^17.2.3",
+    "@types/node": "^17.0.23",
     "nodemon": "^2.0.15",
     "rimraf": "^3.0.2",
+    "ts-node": "^10.7.0",
+    "tslib": "^2.3.1",
     "typescript": "^4.6.3"
   },
   "dependencies": {
+    "@prisma/client": "^3.11.1",
+    "awilix": "^7.0.1",
+    "awilix-express": "^7.0.0",
     "express": "^4.17.3",
+    "joi": "^17.6.0",
+    "module-alias": "^2.2.2",
     "prisma": "^3.11.1"
+  },
+  "_moduleAliases": {
+    "@/infra": "./dist/infra",
+    "@/usecases": "./dist/domain/usecases",
+    "@/entities": "./dist/domain/entities",
+    "@/repositories": "./dist/data/repositories",
+    "@/controllers": "./dist/presentation/controllers",
+    "@/errors": "./dist/presentation/errors"
   }
 }

@@ -1,10 +1,11 @@
-import { Express, Router } from 'express';
-import { levelRoutes } from './level-routes';
+import { AwilixContainer } from "awilix";
+import { Express, Router } from "express";
+import { levelRoutes } from "./level-routes";
 
-export const setupRoutes = (app: Express) => {
+export const setupRoutes = (app: Express, container: AwilixContainer) => {
   const router = Router();
 
-  app.use('/levels', router);
+  app.use("/levels", router);
 
-  levelRoutes(router);
-}
+  levelRoutes(router, container);
+};

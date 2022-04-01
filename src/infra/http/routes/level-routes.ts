@@ -1,8 +1,12 @@
-import { Router } from 'express';
-import { makeAddLevelController } from '@/factories/controllers/levels/add-level';
+import { AwilixContainer } from "awilix";
+import { Router } from "express";
 
-export const levelRoutes = (router: Router) => {
-  const addLevelController = makeAddLevelController();
+export const levelRoutes = (router: Router, container: AwilixContainer) => {
+  router.post("/", (req, res) => {
+    container.resolve("addLevelController").handle(req, res);
+  });
 
-  router.post('', addLevelController.handle);
-}
+  router.get("/:id", (req, res) => {
+    container.resolve("getLevelController").handle(req, res);
+  });
+};

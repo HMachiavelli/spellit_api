@@ -1,26 +1,30 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
+import { AppContainer } from "@/infra/container";
+import {
+  GetLevelInput,
+  GetLevelOutput,
+} from "@/usecases/levels/get-level/get-level.dto";
+import GetLevel from "domain/usecases/levels/get-level/get-level.usecase";
 
 export class GetLevelController {
-  constructor(
-    private readonly validation: any,
-    private readonly addSurvey: any
-  ) { }
+  private readonly getLevel: GetLevel;
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  constructor(container: AppContainer) {
+    this.getLevel = container.getLevel;
+  }
+
+  public async handle(request: Request, response: Response): Promise<Response> {
     try {
-      // const error = this.validation.validate(request)
-      // if (error) {
-      //   return badRequest(error)
-      // }
+      const input: GetLevelInput = {
+        id: +request.params.id,
+      };
 
-      // await this.addSurvey.add({
-      //   ...request,
-      //   date: new Date()
-      // });
+      const output: GetLevelOutput = await this.getLevel.execute(input);
 
-      return response.status(200).json({});
+      return response.status(200).json(output);
     } catch (error) {
-      // return serverError(error)
+      console.log(error);
+      return response.status(500).json(error);
     }
   }
 }

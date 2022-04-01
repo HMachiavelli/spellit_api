@@ -1,47 +1,28 @@
 {
-    "compilerOptions": {
-      "noImplicitAny": true,
-      "declaration": false,
-      "strict": true,
-      "strictNullChecks": false,
-      "target": "ES2019",
-      "module": "commonjs",
-      "resolveJsonModule": true,
-      "allowJs": false,
-      "checkJs": false,
-      "outDir": "dist",
-      "esModuleInterop": true,
-      "sourceMap": true,
-      "rootDir": "./src",
-      "baseUrl": "./src",
-      "paths": {
-        "@/gateways/*": [
-          "../src/data/gateways/*"
-        ],
-        "@/factories/*": [
-          "../src/data/factories/*"
-        ],
-        "@/usecases/*": [
-          "../src/domain/usecases/*"
-        ],
-        "@/entities/*": [
-          "../src/domain/entities/*"
-        ],
-        "@/repositories/*": [
-          "../src/infra/db/repositories/*"
-        ],
-        "@/models/*": [
-          "../src/infra/db/models/*"
-        ],
-        "@/controllers/*": [
-          "../src/presentation/controllers/*"
-        ],
-        "@/errors/*": [
-          "../src/presentation/errors/*"
-        ]
-      }
-    },
-    "compileOnSave": true,
-    "include": ["./src"]
-  }
-  
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "declaration": false,
+    "strict": true,
+    "strictNullChecks": false,
+    "target": "ES2019",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "allowJs": false,
+    "checkJs": false,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "@/infra/*": ["../src/infra/*"],
+      "@/usecases/*": ["../src/domain/usecases/*"],
+      "@/entities/*": ["../src/domain/entities/*"],
+      "@/repositories/*": ["../src/data/repositories/*"],
+      "@/controllers/*": ["../src/presentation/controllers/*"],
+      "@/errors/*": ["../src/presentation/errors/*"]
+    }
+  },
+  "compileOnSave": true,
+  "include": ["./src"]
+}
