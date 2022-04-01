@@ -2,6 +2,14 @@ import { AppContainer } from "@/infra/container";
 import Level from "@/entities/level";
 import { PrismaClient } from "@prisma/client";
 
+export type FindManyOptions = {
+  search: string,
+  limit: number,
+  offset: number,
+  sortBy: string,
+  order: string
+}
+
 export class LevelRepository {
   private prismaClient: PrismaClient;
 

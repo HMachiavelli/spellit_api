@@ -9,4 +9,16 @@ export const levelRoutes = (router: Router, container: AwilixContainer) => {
   router.get("/:id", (req, res) => {
     container.resolve("getLevelController").handle(req, res);
   });
+
+  router.get("/", (req, res) => {
+    container.resolve("getLevelsController").handle(req, res);
+  });
+
+  router.delete("/:id", (req, res) => {
+    container.resolve("removeLevelsController").handle(req, res);
+  });
+
+  router.patch("/", (req, res) => {
+    container.resolve("updateLevelsController").handle(req, res);
+  });
 };
