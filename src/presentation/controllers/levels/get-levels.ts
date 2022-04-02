@@ -15,7 +15,13 @@ export class GetLevelsController {
 
   public async handle(request: Request, response: Response): Promise<Response> {
     try {
-      const input: any = request.query;
+      const input: GetLevelsInput = {
+        search: (request.query.search || "").toString(),
+        page: +(request.query.page || 1),
+        page_size: +(request.query.page_size || 10),
+        sort_by: (request.query.sort_by || "id").toString(),
+        order: (request.query.order || "ASC").toString(),
+      };
 
       const output: GetLevelsOutput = await this.getLevels.execute(input);
 

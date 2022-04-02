@@ -3,12 +3,12 @@ import Level from "@/entities/level";
 import { PrismaClient } from "@prisma/client";
 
 export type FindManyOptions = {
-  search: string,
-  limit: number,
-  offset: number,
-  sortBy: string,
-  order: string
-}
+  search: string;
+  limit: number;
+  offset: number;
+  sortBy: string;
+  order: string;
+};
 
 export class LevelRepository {
   private prismaClient: PrismaClient;
@@ -47,14 +47,21 @@ export class LevelRepository {
 
   public async find(options: any): Promise<Level[]> {
     let orderBy: any = {};
+    let where: any = {};
     if (options.sortBy) {
       orderBy[options.sortBy] = options.order || "asc";
     }
 
+    if (options.search && options.search !== "") {
+      where = {
+        title: {
+          contains: options.search,
+        },
+      };
+    }
+
     const found = await this.prismaClient.level.findMany({
-      where: {
-        title: options.search,
-      },
+      where,
       orderBy,
       skip: options.offset,
       take: options.limit,

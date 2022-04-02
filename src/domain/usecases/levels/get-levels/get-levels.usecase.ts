@@ -11,14 +11,14 @@ export default class GetLevels {
   }
 
   public async execute(input: GetLevelsInput) {
-    const offset = (input.page * input.page_size) - input.page_size;
+    const offset = input.page * input.page_size - input.page_size;
 
     const options: FindManyOptions = {
       search: input.search.trim(),
       limit: +(input.page_size || 10),
       offset: +offset,
       sortBy: input.sort_by.trim(),
-      order: input.order.trim().toUpperCase()
+      order: input.order.trim().toLowerCase(),
     };
 
     const list: Level[] = await this.levelRepository.find(options);
