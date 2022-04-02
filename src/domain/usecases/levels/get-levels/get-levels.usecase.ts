@@ -13,6 +13,8 @@ export default class GetLevels {
   public async execute(input: GetLevelsInput) {
     const offset = input.page * input.page_size - input.page_size;
 
+    const all: Level[] = await this.levelRepository.find({});
+
     const options: FindManyOptions = {
       search: input.search.trim(),
       limit: +(input.page_size || 10),
@@ -22,11 +24,16 @@ export default class GetLevels {
     };
 
     const list: Level[] = await this.levelRepository.find(options);
-    return this.mapResponse(list);
+    const levelList = this.mapResponse(list);
+
+    return {
+      total: all.length,
+      list: levelList,
+    };
   }
 
-  private mapResponse(list: Level[]): GetLevelsOutput {
-    const response: GetLevelsOutput = [];
+  private mapResponse(list: Level[]): any {
+    const response: any = [];
     list.map((item: Level) => {
       response.push({
         id: item.id,
