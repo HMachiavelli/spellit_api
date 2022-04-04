@@ -24,7 +24,7 @@ export class LevelRepository {
   }
 
   public async update(data: any): Promise<Level> {
-    const where = { id: data.id };
+    const where = { id: +data.id };
     delete data.id;
 
     const updated = await this.prismaClient.level.update({
