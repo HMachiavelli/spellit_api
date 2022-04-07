@@ -15,4 +15,6 @@ model Level {
   title      String   @db.VarChar(255)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  @@map("levels")
 }
