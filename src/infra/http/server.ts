@@ -17,7 +17,5 @@ setupRoutes(app, container);
 
 app.use(scopePerRequest(container));
 
-const port = process.env.HTTP_PORT || 80;
-app.listen(port, () =>
-  console.log(`Server running at http://localhost:${port}`)
-);
+const port = process.env.PORT || 8080;
+app.listen(port, () => console.log(`Server running at port ${port}`));
