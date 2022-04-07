@@ -4,10 +4,10 @@
   "description": "NodeJS Rest API for the Spell It client, using Clean Architecture concepts",
   "author": "Henrique Machiavelli",
   "scripts": {
-    "postinstall": "tsc && rimraf src",
     "start": "node dist/infra/http/server.js",
     "debug": "nodemon --watch \"src/\" --exec \"npm run build && npm start\"",
-    "build": "rimraf dist && tsc -p tsconfig-build.json"
+    "dev": "rimraf dist && tsc -p tsconfig-build.json",
+    "build": "rimraf dist && tsc -p tsconfig-build.json && rimraf src"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
