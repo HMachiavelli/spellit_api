@@ -10,11 +10,204 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Language {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(100)
+  flag       String   @db.VarChar(255)
+  active     Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  games      Game[]
+
+  @@map("languages")
+}
+
+model Game {
+  id          Int          @id @default(autoincrement())
+  name        String       @db.VarChar(100)
+  description String       @db.VarChar(400)
+  logo        String?      @db.VarChar(255)
+  active      Boolean      @default(true)
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  exercises   Exercise[]
+  language    Language     @relation(fields: [language_id], references: [id])
+  language_id Int
+  results     GameResult[]
+  levels      Level[]
+
+  @@map("games")
+}
+
+model Exercise {
+  id                Int        @id @default(autoincrement())
+  type              String     @db.VarChar(10)
+  question          String     @db.VarChar(400)
+  answer            String     @db.VarChar(255)
+  active            Boolean    @default(true)
+  created_at        DateTime   @default(now())
+  updated_at        DateTime   @updatedAt
+  game              Game       @relation(fields: [game_id], references: [id])
+  game_id           Int
+  level             Level      @relation(fields: [level_id], references: [id])
+  level_id          Int
+  answer_type       AnswerType @relation(fields: [answer_type_id], references: [id])
+  answer_type_id    Int
+  question_media    Media?     @relation(fields: [question_media_id], references: [id])
+  question_media_id Int?
+
+  @@map("exercises")
+  GameExerciseResult GameExerciseResult[]
+}
+
 model Level {
   id         Int      @id @default(autoincrement())
   title      String   @db.VarChar(255)
+  active     Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  game       Game     @relation(fields: [game_id], references: [id])
+  game_id    Int
+
+  @@map("levels")
+  Exercise Exercise[]
+}
+
+model AnswerType {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(100)
+  active     Boolean  @default(true)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("levels")
+  @@map("answer_types")
+  Exercise Exercise[]
+}
+
+model Media {
+  id         Int      @id @default(autoincrement())
+  url        String   @db.VarChar(255)
+  created_at DateTime @default(now())
+
+  @@map("medias")
+  Exercise Exercise[]
+}
+
+model GameResult {
+  id               Int                  @id @default(autoincrement())
+  total_score      Int
+  current_exercise Int?
+  started_at       DateTime             @default(now())
+  finished_at      DateTime             @updatedAt
+  game             Game                 @relation(fields: [game_id], references: [id])
+  game_id          Int
+  user             User                 @relation(fields: [user_id], references: [id])
+  user_id          Int
+  exercise_results GameExerciseResult[]
+
+  @@map("game_results")
+}
+
+model GameExerciseResult {
+  id              Int        @id @default(autoincrement())
+  received_answer String     @db.VarChar(255)
+  score           Int
+  created_at      DateTime   @default(now())
+  exercise        Exercise   @relation(fields: [exercise_id], references: [id])
+  exercise_id     Int
+  game_result     GameResult @relation(fields: [game_result_id], references: [id])
+  game_result_id  Int
+
+  @@map("game_exercise_results")
+}
+
+model User {
+  id            Int               @id @default(autoincrement())
+  name          String            @db.VarChar(150)
+  role          String            @db.VarChar(20)
+  active        Boolean           @default(true)
+  created_at    DateTime          @default(now())
+  updated_at    DateTime          @updatedAt
+  email         String            @db.VarChar(150)
+  password      String            @db.VarChar(400)
+  access_tokens UserAccessToken[]
+  access_logs   UserAccessLog[]
+  progress      UserProgress[]
+  rewards       UserReward[]
+
+  @@map("users")
+  GameResult GameResult[]
+}
+
+model Reward {
+  id          Int          @id @default(autoincrement())
+  type        String       @db.VarChar(100)
+  title       String       @db.VarChar(100)
+  threshold   Int
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  reward      String       @db.VarChar(400)
+  description String       @db.VarChar(400)
+  users       UserReward[]
+
+  @@map("rewards")
+}
+
+model UserReward {
+  user       User      @relation(fields: [user_id], references: [id])
+  user_id    Int
+  reward     Reward    @relation(fields: [reward_id], references: [id])
+  reward_id  Int
+  sent_at    DateTime?
+  claimed_at DateTime?
+
+  @@id([user_id, reward_id])
+  @@map("users_rewards")
+}
+
+model UserAccessToken {
+  id         Int      @id @default(autoincrement())
+  token      String   @db.VarChar(400)
+  expire_at  DateTime
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+
+  @@map("user_access_tokens")
+}
+
+model UserAccessLog {
+  id         Int      @id @default(autoincrement())
+  ip_address String   @db.VarChar(20)
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+
+  @@map("user_access_logs")
+}
+
+model UserProgress {
+  id               Int          @id @default(autoincrement())
+  total_points     Int
+  to_next_level    Int
+  updated_at       DateTime     @default(now())
+  user             User         @relation(fields: [user_id], references: [id])
+  user_id          Int
+  profile_level    ProfileLevel @relation(fields: [profile_level_id], references: [id])
+  profile_level_id Int
+
+  @@map("user_progresses")
+}
+
+model ProfileLevel {
+  id            Int      @id @default(autoincrement())
+  title         String   @db.VarChar(100)
+  description   String   @db.VarChar(400)
+  needed_points Int
+  active        Boolean  @default(true)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  @@map("profile_levels")
+  UserProgress UserProgress[]
 }
