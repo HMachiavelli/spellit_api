@@ -5,6 +5,7 @@ import { createContainer } from "awilix";
 import { scopePerRequest } from "awilix-express";
 import { setupRoutes } from "./routes";
 import { registerModules } from "@/infra/container";
+import errorMiddleware from "@/infra/http/middlewares/error";
 
 const container = createContainer();
 
@@ -16,6 +17,7 @@ registerModules(container);
 setupRoutes(app, container);
 
 app.use(scopePerRequest(container));
+app.use(errorMiddleware);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server running at port ${port}`));

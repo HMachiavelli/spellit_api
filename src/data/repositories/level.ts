@@ -1,14 +1,7 @@
 import { AppContainer } from "@/infra/container";
 import Level from "@/entities/level";
-import { PrismaClient } from "@prisma/client";
-
-export type FindManyOptions = {
-  search: string;
-  limit: number;
-  offset: number;
-  sortBy: string;
-  order: string;
-};
+import { Prisma, PrismaClient } from "@prisma/client";
+import { FindManyOptions } from "./";
 
 export class LevelRepository {
   private prismaClient: PrismaClient;
@@ -17,7 +10,7 @@ export class LevelRepository {
     this.prismaClient = new PrismaClient();
   }
 
-  public async create(level: Level): Promise<Level> {
+  public async create(level: Prisma.LevelCreateInput): Promise<Level> {
     const inserted = await this.prismaClient.level.create({ data: level });
 
     return this.mapToEntity(inserted);
@@ -45,7 +38,7 @@ export class LevelRepository {
     return this.mapToEntity(found);
   }
 
-  public async find(options: any): Promise<Level[]> {
+  public async find(options: FindManyOptions): Promise<Level[]> {
     let orderBy: any = {};
     let where: any = {};
     if (options.sortBy) {

@@ -2,6 +2,7 @@ import { AddLevelInput, AddLevelOutput } from "./add-level.dto";
 import { AppContainer } from "infra/container";
 import Level from "@/entities/level";
 import { LevelRepository } from "@/repositories/index";
+import { Prisma } from "@prisma/client";
 
 export default class AddLevel {
   private levelRepository: LevelRepository;
@@ -11,17 +12,18 @@ export default class AddLevel {
   }
 
   public async execute(input: AddLevelInput) {
-    let level: Level = {
+    let level: Prisma.LevelCreateInput = {
       title: input.title,
       created_at: new Date(),
+      game: { connect: { id: 1 } },
     };
 
-    level = await this.levelRepository.create(level);
+    const addedLevel = await this.levelRepository.create(level);
 
     const response: AddLevelOutput = {
-      id: level.id,
-      title: level.title,
-      created_at: level.created_at,
+      id: addedLevel.id,
+      title: addedLevel.title,
+      created_at: addedLevel.created_at,
     };
 
     return response;

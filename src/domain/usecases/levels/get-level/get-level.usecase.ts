@@ -12,6 +12,9 @@ export default class GetLevel {
 
   public async execute(input: GetLevelInput) {
     const level: Level = await this.levelRepository.findById(input.id);
+    if (!level) {
+      throw new Error("Not found");
+    }
 
     const response: GetLevelOutput = {
       id: level.id,

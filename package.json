@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/infra/http/server.js",
     "debug": "nodemon --watch \"src/\" --exec \"npm run build && npm start\"",
-    "dev": "rimraf dist && tsc -p tsconfig-build.json",
+    "dev": "rimraf dist && tsc -p tsconfig-build.json && npm start",
     "build": "rimraf dist && tsc -p tsconfig-build.json && rimraf src"
   },
   "devDependencies": {

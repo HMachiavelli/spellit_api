@@ -134,9 +134,9 @@ model User {
   access_logs   UserAccessLog[]
   progress      UserProgress[]
   rewards       UserReward[]
+  game_results  GameResult[]
 
   @@map("users")
-  GameResult GameResult[]
 }
 
 model Reward {
@@ -170,7 +170,7 @@ model UserAccessToken {
   token      String   @db.VarChar(400)
   expire_at  DateTime
   created_at DateTime @default(now())
-  user       User     @relation(fields: [user_id], references: [id])
+  user       User?    @relation(fields: [user_id], references: [id])
   user_id    Int
 
   @@map("user_access_tokens")

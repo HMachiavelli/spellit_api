@@ -11,7 +11,16 @@ import RemoveLevel from "@/usecases/levels/remove-level/remove-level.usecase";
 import { UpdateLevelController } from "@/controllers/levels";
 import UpdateLevel from "@/usecases/levels/update-level/update-level.usecase";
 
-import { LevelRepository } from "@/repositories/index";
+import { AuthenticateController } from "@/controllers/auth/authenticate";
+import Authenticate from "@/usecases/auth/authenticate/authenticate.usecase";
+
+import {
+  LevelRepository,
+  UserRepository,
+  UserAccessTokenRepository,
+} from "@/repositories/index";
+
+import { BasicParser, IBasicParser } from "@/infra/http/utils/basic-parser";
 
 export interface AppContainer {
   addLevelController: AddLevelController;
@@ -29,7 +38,14 @@ export interface AppContainer {
   updateLevelController: UpdateLevelController;
   updateLevel: UpdateLevel;
 
+  authenticateController: AuthenticateController;
+  authenticate: Authenticate;
+
   levelRepository: LevelRepository;
+  userRepository: UserRepository;
+  userAccessTokenRepository: UserAccessTokenRepository;
+
+  basicParser: IBasicParser;
 }
 
 export const registerModules = (container: AwilixContainer) => {
@@ -49,6 +65,13 @@ export const registerModules = (container: AwilixContainer) => {
     updateLevelController: asClass(UpdateLevelController).scoped(),
     updateLevel: asClass(UpdateLevel).scoped(),
 
+    authenticateController: asClass(AuthenticateController).scoped(),
+    authenticate: asClass(Authenticate).scoped(),
+
     levelRepository: asClass(LevelRepository).scoped(),
+    userRepository: asClass(UserRepository).scoped(),
+    userAccessTokenRepository: asClass(UserAccessTokenRepository).scoped(),
+
+    basicParser: asClass(BasicParser).singleton(),
   });
 };
