@@ -13,7 +13,11 @@ export class RemoveLevelController {
     this.removeLevel = container.removeLevel;
   }
 
-  public async handle(request: Request, response: Response): Promise<Response> {
+  public async handle(
+    request: Request,
+    response: Response,
+    next: any
+  ): Promise<Response> {
     try {
       const input: RemoveLevelInput = {
         id: +request.params.id,
@@ -24,7 +28,7 @@ export class RemoveLevelController {
       return response.status(200).json(output);
     } catch (error) {
       console.log(error);
-      return response.status(500).json(error);
+      next(error);
     }
   }
 }

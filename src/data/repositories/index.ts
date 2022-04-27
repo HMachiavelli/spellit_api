@@ -9,3 +9,4 @@ export type FindManyOptions = {
 export * from "./level";
 export * from "./user";
 export * from "./user-access-token";
+export * from "./user-access-log";

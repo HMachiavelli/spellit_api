@@ -30,7 +30,7 @@ export class UserAccessTokenRepository {
   }
 
   public async delete(id: number): Promise<UserAccessToken> {
-    const deleted = await this.prismaClient.user.delete({
+    const deleted = await this.prismaClient.userAccessLog.delete({
       where: {
         id,
       },

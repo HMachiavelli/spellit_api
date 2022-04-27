@@ -16,19 +16,29 @@ export class AuthenticateController {
     this.basicParser = container.basicParser;
   }
 
-  public async handle(request: Request, response: Response): Promise<Response> {
-    const { client_id, client_secret } = this.basicParser.parse(
-      request.get("Authorization")
-    );
+  public async handle(
+    request: Request,
+    response: Response,
+    next: any
+  ): Promise<Response> {
+    try {
+      const { client_id, client_secret } = this.basicParser.parse(
+        request.get("Authorization")
+      );
 
-    const input: AuthenticateInput = {
-      client_id,
-      client_secret,
-      grant_type: request.body.grant_type || null,
-    };
+      const input: AuthenticateInput = {
+        client_id,
+        client_secret,
+        grant_type: request.body.grant_type || null,
+        ip_address: request.clientIp || null,
+      };
 
-    const output: AuthenticateOutput = await this.authenticate.execute(input);
+      const output: AuthenticateOutput = await this.authenticate.execute(input);
 
-    return response.status(200).json(output);
+      return response.status(200).json(output);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
   }
 }

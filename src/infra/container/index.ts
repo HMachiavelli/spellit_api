@@ -18,6 +18,7 @@ import {
   LevelRepository,
   UserRepository,
   UserAccessTokenRepository,
+  UserAccessLogRepository,
 } from "@/repositories/index";
 
 import { BasicParser, IBasicParser } from "@/infra/http/utils/basic-parser";
@@ -44,6 +45,7 @@ export interface AppContainer {
   levelRepository: LevelRepository;
   userRepository: UserRepository;
   userAccessTokenRepository: UserAccessTokenRepository;
+  userAccessLogRepository: UserAccessLogRepository;
 
   basicParser: IBasicParser;
 }
@@ -71,6 +73,7 @@ export const registerModules = (container: AwilixContainer) => {
     levelRepository: asClass(LevelRepository).scoped(),
     userRepository: asClass(UserRepository).scoped(),
     userAccessTokenRepository: asClass(UserAccessTokenRepository).scoped(),
+    userAccessLogRepository: asClass(UserAccessLogRepository).scoped(),
 
     basicParser: asClass(BasicParser).singleton(),
   });
