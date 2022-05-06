@@ -1,4 +1,7 @@
-import { asClass, AwilixContainer } from "awilix";
+import { asClass, asValue, AwilixContainer } from "awilix";
+import { PrismaClient } from "@prisma/client";
+
+import { Repository } from "@/protocols/repository";
 
 import { AddLevelController } from "@/controllers/levels";
 import AddLevel from "@/usecases/levels/add-level/add-level.usecase";
@@ -19,39 +22,45 @@ import {
   UserRepository,
   UserAccessTokenRepository,
   UserAccessLogRepository,
+  ExerciseRepository,
 } from "@/repositories/index";
 
 import { BasicParser, IBasicParser } from "@/infra/http/utils/basic-parser";
 
 export interface AppContainer {
-  addLevelController: AddLevelController;
-  addLevel: AddLevel;
+  prismaClient?: any;
 
-  getLevelController: GetLevelController;
-  getLevel: GetLevel;
+  addLevelController?: AddLevelController;
+  addLevel?: AddLevel;
 
-  getLevelsController: GetLevelsController;
-  getLevels: GetLevels;
+  getLevelController?: GetLevelController;
+  getLevel?: GetLevel;
 
-  removeLevelController: RemoveLevelController;
-  removeLevel: RemoveLevel;
+  getLevelsController?: GetLevelsController;
+  getLevels?: GetLevels;
 
-  updateLevelController: UpdateLevelController;
-  updateLevel: UpdateLevel;
+  removeLevelController?: RemoveLevelController;
+  removeLevel?: RemoveLevel;
 
-  authenticateController: AuthenticateController;
-  authenticate: Authenticate;
+  updateLevelController?: UpdateLevelController;
+  updateLevel?: UpdateLevel;
 
-  levelRepository: LevelRepository;
-  userRepository: UserRepository;
-  userAccessTokenRepository: UserAccessTokenRepository;
-  userAccessLogRepository: UserAccessLogRepository;
+  authenticateController?: AuthenticateController;
+  authenticate?: Authenticate;
 
-  basicParser: IBasicParser;
+  exerciseRepository?: Repository;
+  levelRepository?: Repository;
+  userRepository?: Repository;
+  userAccessTokenRepository?: Repository;
+  userAccessLogRepository?: Repository;
+
+  basicParser?: IBasicParser;
 }
 
 export const registerModules = (container: AwilixContainer) => {
   container.register({
+    prismaClient: asValue(new PrismaClient()),
+
     addLevelController: asClass(AddLevelController).scoped(),
     addLevel: asClass(AddLevel).scoped(),
 
@@ -70,6 +79,7 @@ export const registerModules = (container: AwilixContainer) => {
     authenticateController: asClass(AuthenticateController).scoped(),
     authenticate: asClass(Authenticate).scoped(),
 
+    exerciseRepository: asClass(ExerciseRepository).scoped(),
     levelRepository: asClass(LevelRepository).scoped(),
     userRepository: asClass(UserRepository).scoped(),
     userAccessTokenRepository: asClass(UserAccessTokenRepository).scoped(),

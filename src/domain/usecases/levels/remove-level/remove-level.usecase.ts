@@ -1,10 +1,10 @@
 import { RemoveLevelInput, RemoveLevelOutput } from "./remove-level.dto";
 import { AppContainer } from "infra/container";
 import Level from "@/entities/level";
-import { LevelRepository } from "@/repositories/index";
+import { Repository } from "@/protocols/repository";
 
 export default class GetLevel {
-  private levelRepository: LevelRepository;
+  private levelRepository: Repository;
 
   constructor(container: AppContainer) {
     this.levelRepository = container.levelRepository;
@@ -18,7 +18,7 @@ export default class GetLevel {
       title: level.title,
       created_at: level.created_at,
       updated_at: level.updated_at,
-      removed_at: new Date()
+      removed_at: new Date(),
     };
 
     return response;

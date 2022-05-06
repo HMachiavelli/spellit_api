@@ -1,10 +1,10 @@
 import { GetLevelInput, GetLevelOutput } from "./get-level.dto";
 import { AppContainer } from "infra/container";
 import Level from "@/entities/level";
-import { LevelRepository } from "@/repositories/index";
+import { Repository } from "domain/protocols/repository";
 
 export default class GetLevel {
-  private levelRepository: LevelRepository;
+  private levelRepository: Repository;
 
   constructor(container: AppContainer) {
     this.levelRepository = container.levelRepository;

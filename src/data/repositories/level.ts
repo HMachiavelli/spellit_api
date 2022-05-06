@@ -2,12 +2,13 @@ import { AppContainer } from "@/infra/container";
 import Level from "@/entities/level";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { FindManyOptions } from "./";
+import { Repository } from "@/protocols/repository";
 
-export class LevelRepository {
+export class LevelRepository implements Repository {
   private prismaClient: PrismaClient;
 
   constructor(container: AppContainer) {
-    this.prismaClient = new PrismaClient();
+    this.prismaClient = container.prismaClient;
   }
 
   public async create(level: Prisma.LevelCreateInput): Promise<Level> {

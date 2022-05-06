@@ -1,11 +1,11 @@
 import { AddLevelInput, AddLevelOutput } from "./add-level.dto";
 import { AppContainer } from "infra/container";
 import Level from "@/entities/level";
-import { LevelRepository } from "@/repositories/index";
+import { Repository } from "@/protocols/repository";
 import { Prisma } from "@prisma/client";
 
 export default class AddLevel {
-  private levelRepository: LevelRepository;
+  private levelRepository: Repository;
 
   constructor(container: AppContainer) {
     this.levelRepository = container.levelRepository;

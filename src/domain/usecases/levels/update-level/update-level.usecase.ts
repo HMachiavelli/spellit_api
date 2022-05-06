@@ -1,10 +1,10 @@
 import { UpdateLevelInput, UpdateLevelOutput } from "./update-level.dto";
 import { AppContainer } from "infra/container";
 import Level from "@/entities/level";
-import { LevelRepository } from "@/repositories/index";
+import { Repository } from "@/protocols/repository";
 
 export default class UpdateLevel {
-  private levelRepository: LevelRepository;
+  private levelRepository: Repository;
 
   constructor(container: AppContainer) {
     this.levelRepository = container.levelRepository;
@@ -23,7 +23,7 @@ export default class UpdateLevel {
       id: level.id,
       title: level.title,
       created_at: level.created_at,
-      updated_at: level.updated_at
+      updated_at: level.updated_at,
     };
 
     return response;

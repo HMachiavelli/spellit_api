@@ -6,6 +6,7 @@ export type FindManyOptions = {
   order?: string;
 };
 
+export * from "./exercise";
 export * from "./level";
 export * from "./user";
 export * from "./user-access-token";

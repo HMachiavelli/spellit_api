@@ -55,9 +55,9 @@ model Exercise {
   answer_type_id    Int
   question_media    Media?     @relation(fields: [question_media_id], references: [id])
   question_media_id Int?
+  game_exercise_results GameExerciseResult[]
 
   @@map("exercises")
-  GameExerciseResult GameExerciseResult[]
 }
 
 model Level {
