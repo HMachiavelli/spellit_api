@@ -7,7 +7,7 @@ export class UserRepository {
   private prismaClient: PrismaClient;
 
   constructor(container: AppContainer) {
-    this.prismaClient = new PrismaClient();
+    this.prismaClient = container.prismaClient;
   }
 
   public async create(user: Prisma.UserCreateInput): Promise<User> {

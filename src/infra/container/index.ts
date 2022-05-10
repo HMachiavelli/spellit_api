@@ -23,6 +23,9 @@ import {
   UserAccessTokenRepository,
   UserAccessLogRepository,
   ExerciseRepository,
+  GameExerciseResultRepository,
+  GameResultRepository,
+  GameRepository,
 } from "@/repositories/index";
 
 import { BasicParser, IBasicParser } from "@/infra/http/utils/basic-parser";
@@ -49,6 +52,9 @@ export interface AppContainer {
   authenticate?: Authenticate;
 
   exerciseRepository?: Repository;
+  gameResultRepository?: Repository;
+  gameExerciseResultRepository?: Repository;
+  gameRepository?: Repository;
   levelRepository?: Repository;
   userRepository?: Repository;
   userAccessTokenRepository?: Repository;
@@ -80,6 +86,11 @@ export const registerModules = (container: AwilixContainer) => {
     authenticate: asClass(Authenticate).scoped(),
 
     exerciseRepository: asClass(ExerciseRepository).scoped(),
+    gameResultRepository: asClass(GameResultRepository).scoped(),
+    gameExerciseResultRepository: asClass(
+      GameExerciseResultRepository
+    ).scoped(),
+    gameRepository: asClass(GameRepository).scoped(),
     levelRepository: asClass(LevelRepository).scoped(),
     userRepository: asClass(UserRepository).scoped(),
     userAccessTokenRepository: asClass(UserAccessTokenRepository).scoped(),

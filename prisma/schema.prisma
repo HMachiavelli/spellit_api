@@ -68,9 +68,10 @@ model Level {
   updated_at DateTime @updatedAt
   game       Game     @relation(fields: [game_id], references: [id])
   game_id    Int
+  exercise   Exercise[]
+  game_results GameResult[]
 
   @@map("levels")
-  Exercise Exercise[]
 }
 
 model AnswerType {
@@ -79,18 +80,18 @@ model AnswerType {
   active     Boolean  @default(true)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  exercises  Exercise[]
 
   @@map("answer_types")
-  Exercise Exercise[]
 }
 
 model Media {
   id         Int      @id @default(autoincrement())
   url        String   @db.VarChar(255)
   created_at DateTime @default(now())
+  exercises  Exercise[]
 
   @@map("medias")
-  Exercise Exercise[]
 }
 
 model GameResult {
@@ -98,9 +99,11 @@ model GameResult {
   total_score      Int
   current_exercise Int?
   started_at       DateTime             @default(now())
-  finished_at      DateTime             @updatedAt
+  finished_at      DateTime?            
   game             Game                 @relation(fields: [game_id], references: [id])
   game_id          Int
+  level            Level                @relation(fields: [level_id], references: [id])
+  level_id         Int
   user             User                 @relation(fields: [user_id], references: [id])
   user_id          Int
   exercise_results GameExerciseResult[]
@@ -200,14 +203,14 @@ model UserProgress {
 }
 
 model ProfileLevel {
-  id            Int      @id @default(autoincrement())
-  title         String   @db.VarChar(100)
-  description   String   @db.VarChar(400)
-  needed_points Int
-  active        Boolean  @default(true)
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  id              Int      @id @default(autoincrement())
+  title           String   @db.VarChar(100)
+  description     String   @db.VarChar(400)
+  needed_points   Int
+  active          Boolean  @default(true)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  user_progresses UserProgress[]
 
   @@map("profile_levels")
-  UserProgress UserProgress[]
 }

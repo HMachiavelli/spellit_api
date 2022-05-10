@@ -6,7 +6,7 @@ export class UserAccessLogRepository {
   private prismaClient: PrismaClient;
 
   constructor(container: AppContainer) {
-    this.prismaClient = new PrismaClient();
+    this.prismaClient = container.prismaClient;
   }
 
   public async create(

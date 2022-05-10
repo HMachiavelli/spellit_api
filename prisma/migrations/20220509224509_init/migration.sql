@@ -1,13 +1,3 @@
-/*
-  Warnings:
-
-  - Added the required column `game_id` to the `levels` table without a default value. This is not possible if the table is not empty.
-
-*/
--- AlterTable
-ALTER TABLE `levels` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
-    ADD COLUMN `game_id` INTEGER NOT NULL;
-
 -- CreateTable
 CREATE TABLE `languages` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -52,6 +42,18 @@ CREATE TABLE `exercises` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `levels` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `game_id` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `answer_types` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
@@ -77,8 +79,9 @@ CREATE TABLE `game_results` (
     `total_score` INTEGER NOT NULL,
     `current_exercise` INTEGER NULL,
     `started_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `finished_at` DATETIME(3) NOT NULL,
+    `finished_at` DATETIME(3) NULL,
     `game_id` INTEGER NOT NULL,
+    `level_id` INTEGER NOT NULL,
     `user_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -200,6 +203,9 @@ ALTER TABLE `levels` ADD CONSTRAINT `levels_game_id_fkey` FOREIGN KEY (`game_id`
 
 -- AddForeignKey
 ALTER TABLE `game_results` ADD CONSTRAINT `game_results_game_id_fkey` FOREIGN KEY (`game_id`) REFERENCES `games`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `game_results` ADD CONSTRAINT `game_results_level_id_fkey` FOREIGN KEY (`level_id`) REFERENCES `levels`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `game_results` ADD CONSTRAINT `game_results_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

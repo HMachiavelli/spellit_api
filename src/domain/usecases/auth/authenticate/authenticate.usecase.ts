@@ -1,16 +1,13 @@
 import { AuthenticateInput, AuthenticateOutput } from "./authenticate.dto";
 import { AppContainer } from "infra/container";
-import { UserAccessLogRepository } from "@/repositories/user-access-log";
-import { UserAccessTokenRepository } from "@/repositories/user-access-token";
-import { UserRepository } from "@/repositories/user";
 import { Prisma } from "@prisma/client";
 import { UnauthorizedError } from "@/errors/UnauthorizedError";
 import * as crypto from "crypto";
 
 export default class GetLevel {
-  private userRepository: UserRepository;
-  private userAccessTokenRepository: UserAccessTokenRepository;
-  private userAccessLogRepository: UserAccessLogRepository;
+  private userRepository: any;
+  private userAccessTokenRepository: any;
+  private userAccessLogRepository: any;
 
   constructor(container: AppContainer) {
     this.userRepository = container.userRepository;

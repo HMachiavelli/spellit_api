@@ -7,6 +7,9 @@ export type FindManyOptions = {
 };
 
 export * from "./exercise";
+export * from "./game-result";
+export * from "./game-exercise-result";
+export * from "./game";
 export * from "./level";
 export * from "./user";
 export * from "./user-access-token";
