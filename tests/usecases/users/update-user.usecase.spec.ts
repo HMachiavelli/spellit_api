@@ -1,43 +1,47 @@
-import UpdateExerciseUsecase from "../../../src/domain/usecases/exercises/update-exercise/update-exercise.usecase";
+import UpdateUserUsecase from "../../../src/domain/usecases/users/update-user/update-user.usecase";
 
 const container = {
-  exerciseRepository: {
+  userRepository: {
     create: jest.fn(),
     update: jest.fn(),
     find: jest.fn(),
     findById: jest.fn(),
     delete: jest.fn(),
     mapToEntity: jest.fn(),
-    getRandom: jest.fn(),
+    findByCredentials: jest.fn(),
   },
 };
 
-const sut = new UpdateExerciseUsecase(container);
+const sut = new UpdateUserUsecase(container);
 
-describe("Update Exercise Usecase Test", () => {
+describe("Update User Usecase Test", () => {
   test("should execute", async () => {
     const date = new Date();
 
     const data = {
       id: 1,
-      question: "Exercise ",
+      name: "User",
     };
 
     const updated = {
       id: 1,
-      question: "Exercise",
+      name: "User",
+      email: "user",
+      role: "admin",
+      password: "pass",
       created_at: date,
       updated_at: date,
     };
 
-    container.exerciseRepository.update.mockResolvedValue(updated);
+    container.userRepository.update.mockResolvedValue(updated);
 
     const usecaseResponse = await sut.execute(data);
     expect(usecaseResponse).toMatchObject({
       id: updated.id,
-      question: updated.question,
+      name: updated.name,
+      role: updated.role,
+      email: updated.email,
       created_at: updated.created_at,
-      updated_at: updated.created_at,
     });
   });
 });

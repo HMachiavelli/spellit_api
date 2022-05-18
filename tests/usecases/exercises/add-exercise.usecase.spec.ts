@@ -8,6 +8,7 @@ const container = {
     findById: jest.fn(),
     delete: jest.fn(),
     mapToEntity: jest.fn(),
+    getRandom: jest.fn(),
   },
 };
 

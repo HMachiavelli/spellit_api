@@ -1,13 +1,13 @@
-import { UnauthorizedError } from "@/errors/UnauthorizedError";
-import { NotFoundError } from "@/errors/NotFoundError";
+import { UnauthorizedException } from "@/presentation/exceptions/unauthorized";
+import { NotFoundException } from "@/presentation/exceptions/not-found";
 
 export default (err: any, req: any, res: any, next: any) => {
   let code = 500;
-  if (err instanceof UnauthorizedError) {
+  if (err instanceof UnauthorizedException) {
     code = 401;
   }
 
-  if (err instanceof NotFoundError) {
+  if (err instanceof NotFoundException) {
     code = 404;
   }
 

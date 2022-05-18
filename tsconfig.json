@@ -20,8 +20,9 @@
       "@/entities/*": ["../src/domain/entities/*"],
       "@/repositories/*": ["../src/data/repositories/*"],
       "@/controllers/*": ["../src/presentation/controllers/*"],
-      "@/errors/*": ["../src/presentation/errors/*"],
-      "@/protocols/*": ["../src/domain/protocols/*"]
+      "@/exceptions/*": ["../src/presentation/exceptions/*"],
+      "@/protocols/*": ["../src/domain/protocols/*"],
+      "@/presentation/*": ["../src/presentation/*"]
     }
   },
   "compileOnSave": true,

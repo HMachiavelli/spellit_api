@@ -1,11 +1,10 @@
 import { AddExerciseInput, AddExerciseOutput } from "./add-exercise.dto";
 import { AppContainer } from "infra/container";
-import Exercise from "@/entities/exercise";
-import { Repository } from "@/protocols/repository";
 import { Prisma } from "@prisma/client";
+import * as RepositoryProtocols from "@/protocols/index";
 
 export default class AddExercise {
-  private exerciseRepository: Repository;
+  private exerciseRepository: RepositoryProtocols.IExerciseRepository;
 
   constructor(container: AppContainer) {
     this.exerciseRepository = container.exerciseRepository;

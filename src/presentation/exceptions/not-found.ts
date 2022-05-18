@@ -1,4 +1,4 @@
-export class NotFoundError extends Error {
+export class NotFoundException extends Error {
   constructor(msg: string) {
     super(msg);
   }

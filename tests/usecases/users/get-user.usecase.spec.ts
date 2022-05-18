@@ -1,20 +1,20 @@
-import GetExerciseUsecase from "../../../src/domain/usecases/exercises/get-exercise/get-exercise.usecase";
+import GetUserUsecase from "../../../src/domain/usecases/users/get-user/get-user.usecase";
 
 const container = {
-  exerciseRepository: {
+  userRepository: {
     create: jest.fn(),
     update: jest.fn(),
     find: jest.fn(),
     findById: jest.fn(),
     delete: jest.fn(),
     mapToEntity: jest.fn(),
-    getRandom: jest.fn(),
+    findByCredentials: jest.fn(),
   },
 };
 
-const sut = new GetExerciseUsecase(container);
+const sut = new GetUserUsecase(container);
 
-describe("Get Exercise Usecase Test", () => {
+describe("Get User Usecase Test", () => {
   test("should execute", async () => {
     const date = new Date();
 
@@ -24,15 +24,24 @@ describe("Get Exercise Usecase Test", () => {
 
     const found = {
       id: 1,
-      question: "Exercise",
+      name: "User",
+      email: "user",
+      role: "admin",
+      password: "pass",
       created_at: date,
       updated_at: date,
     };
 
-    container.exerciseRepository.findById.mockResolvedValue(found);
+    container.userRepository.findById.mockResolvedValue(found);
 
     const usecaseResponse = await sut.execute(data);
-    expect(usecaseResponse).toMatchObject(found);
+    expect(usecaseResponse).toMatchObject({
+      id: found.id,
+      name: found.name,
+      role: found.role,
+      email: found.email,
+      created_at: found.created_at,
+    });
   });
 
   test("should throw error if not found", async () => {
@@ -40,7 +49,7 @@ describe("Get Exercise Usecase Test", () => {
       id: 1,
     };
 
-    container.exerciseRepository.findById.mockResolvedValue(undefined);
+    container.userRepository.findById.mockResolvedValue(undefined);
 
     try {
       await sut.execute(data);

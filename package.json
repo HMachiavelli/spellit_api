@@ -47,6 +47,6 @@
     "@/entities": "./dist/domain/entities",
     "@/repositories": "./dist/data/repositories",
     "@/controllers": "./dist/presentation/controllers",
-    "@/errors": "./dist/presentation/errors"
+    "@/presentation": "./dist/presentation"
   }
 }

@@ -1,15 +1,15 @@
 import { AddGameResultInput, AddGameResultOutput } from "./add-game-result.dto";
 import { AppContainer } from "infra/container";
-import { Repository } from "@/protocols/repository";
 import { Prisma } from "@prisma/client";
-import { NotFoundError } from "@/errors/NotFoundError";
+import { NotFoundException } from "../../../../presentation/exceptions/not-found";
+import * as RepositoryProtocols from "@/protocols/index";
 import Exercise from "@/entities/exercise";
 
 export default class AddGameResult {
-  private gameResultRepository: Repository;
-  private gameRepository: Repository;
-  private levelRepository: Repository;
-  private exerciseRepository: Repository;
+  private gameResultRepository: RepositoryProtocols.IGameResultRepository;
+  private gameRepository: RepositoryProtocols.IGameRepository;
+  private levelRepository: RepositoryProtocols.ILevelRepository;
+  private exerciseRepository: RepositoryProtocols.IExerciseRepository;
 
   constructor(container: AppContainer) {
     this.gameResultRepository = container.gameResultRepository;
@@ -20,11 +20,11 @@ export default class AddGameResult {
 
   public async execute(input: AddGameResultInput) {
     if (!this.levelRepository.findById(input.level_id)) {
-      throw new NotFoundError(`Level ${input.level_id} not found`);
+      throw new NotFoundException(`Level ${input.level_id} not found`);
     }
 
     if (!this.gameRepository.findById(input.game_id)) {
-      throw new NotFoundError(`Game ${input.game_id} not found`);
+      throw new NotFoundException(`Game ${input.game_id} not found`);
     }
 
     let exercise: Prisma.GameResultCreateInput = {
@@ -39,7 +39,11 @@ export default class AddGameResult {
     const response: AddGameResultOutput =
       await this.gameResultRepository.create(exercise);
 
-    response.first_exercise_uri = `/exercises/${2}`;
+    const firstExercise: Exercise = await this.exerciseRepository.getRandom({
+      where: { game_id: input.game_id, level_id: input.level_id },
+    });
+
+    response.first_exercise_uri = `/exercises/${firstExercise.id}`;
 
     return response;
   }

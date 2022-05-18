@@ -1,13 +1,15 @@
 import { AuthenticateInput, AuthenticateOutput } from "./authenticate.dto";
 import { AppContainer } from "infra/container";
 import { Prisma } from "@prisma/client";
-import { UnauthorizedError } from "@/errors/UnauthorizedError";
+import { UnauthorizedException } from "@/presentation/exceptions/unauthorized";
+import * as RepositoryProtocols from "@/protocols/index";
+
 import * as crypto from "crypto";
 
 export default class GetLevel {
-  private userRepository: any;
-  private userAccessTokenRepository: any;
-  private userAccessLogRepository: any;
+  private userRepository: RepositoryProtocols.IUserRepository;
+  private userAccessTokenRepository: RepositoryProtocols.IUserAccessTokenRepository;
+  private userAccessLogRepository: RepositoryProtocols.IUserAccessLogRepository;
 
   constructor(container: AppContainer) {
     this.userRepository = container.userRepository;
@@ -22,11 +24,11 @@ export default class GetLevel {
 
     const user = await this.userRepository.findByCredentials(
       input.client_id,
-      input.client_secret
+      this.hashPassword(input.client_secret)
     );
 
     if (!user) {
-      throw new UnauthorizedError("Unauthorized");
+      throw new UnauthorizedException("Unauthorized");
     }
 
     const token = crypto.randomUUID();
@@ -58,5 +60,11 @@ export default class GetLevel {
     };
 
     return response;
+  }
+
+  private hashPassword(password: string): string {
+    let saltedPass = password + process.env.PASS_SALT;
+
+    return crypto.createHash("sha256").update(saltedPass).digest("hex");
   }
 }

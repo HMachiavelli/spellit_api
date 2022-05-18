@@ -3,14 +3,15 @@ import {
   AnswerExerciseOutput,
 } from "./answer-exercise.dto";
 import { AppContainer } from "infra/container";
-import { Repository } from "@/protocols/repository";
 import { Prisma } from "@prisma/client";
-import { NotFoundError } from "@/errors/NotFoundError";
+import { NotFoundException } from "../../../../presentation/exceptions/not-found";
+import * as RepositoryProtocols from "@/protocols/index";
+import Exercise from "@/entities/exercise";
 
 export default class AddExercise {
-  private exerciseRepository: Repository;
-  private gameResultRepository: Repository;
-  private gameExerciseResultRepository: Repository;
+  private exerciseRepository: RepositoryProtocols.IExerciseRepository;
+  private gameResultRepository: RepositoryProtocols.IGameResultRepository;
+  private gameExerciseResultRepository: RepositoryProtocols.IGameExerciseResultRepository;
 
   constructor(container: AppContainer) {
     this.exerciseRepository = container.exerciseRepository;
@@ -19,15 +20,18 @@ export default class AddExercise {
   }
 
   public async execute(input: AnswerExerciseInput) {
-    if (!this.exerciseRepository.findById(input.exercise_id)) {
-      throw new NotFoundError(`Level ${input.exercise_id} not found`);
+    const exercise: Exercise = this.exerciseRepository.findById(
+      input.exercise_id
+    );
+    if (!exercise) {
+      throw new NotFoundException(`Exercise ${input.exercise_id} not found`);
     }
 
     if (!this.gameResultRepository.findById(input.game_result_id)) {
-      throw new NotFoundError(`Game ${input.game_result_id} not found`);
+      throw new NotFoundException(`Game ${input.game_result_id} not found`);
     }
 
-    let exercise: Prisma.GameExerciseResultCreateInput = {
+    let exerciseResult: Prisma.GameExerciseResultCreateInput = {
       received_answer: input.received_answer,
       score: 50,
       created_at: new Date(),
@@ -36,7 +40,13 @@ export default class AddExercise {
     };
 
     const response: AnswerExerciseOutput =
-      await this.gameExerciseResultRepository.create(exercise);
+      await this.gameExerciseResultRepository.create(exerciseResult);
+
+    const nextExercise: Exercise = await this.exerciseRepository.getRandom({
+      where: { game_id: exercise.game_id, level_id: exercise.level_id },
+    });
+
+    response.next_exercise = `/exercises/${nextExercise.id}`;
 
     return response;
   }

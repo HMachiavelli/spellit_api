@@ -41,6 +41,24 @@ export class ExerciseRepository implements Repository {
     return this.mapToEntity(found);
   }
 
+  public async getRandom(options: any): Promise<Exercise> {
+    const count = await this.prismaClient.exercise.count();
+    const skip = Math.floor(Math.random() * count);
+
+    options = {
+      ...options,
+      take: 1,
+      skip,
+      orderBy: {
+        id: "desc",
+      },
+    };
+
+    const found = await this.prismaClient.exercise.findFirst(options);
+
+    return this.mapToEntity(found);
+  }
+
   public async find(options: FindManyOptions): Promise<Exercise[]> {
     let orderBy: any = {};
     let where: any = {};

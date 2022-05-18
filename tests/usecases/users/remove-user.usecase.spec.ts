@@ -1,20 +1,20 @@
-import RemoveExerciseUsecase from "../../../src/domain/usecases/exercises/remove-exercise/remove-exercise.usecase";
+import RemoveUserUsecase from "../../../src/domain/usecases/users/remove-user/remove-user.usecase";
 
 const container = {
-  exerciseRepository: {
+  userRepository: {
     create: jest.fn(),
     update: jest.fn(),
     find: jest.fn(),
     findById: jest.fn(),
     delete: jest.fn(),
     mapToEntity: jest.fn(),
-    getRandom: jest.fn(),
+    findByCredentials: jest.fn(),
   },
 };
 
-const sut = new RemoveExerciseUsecase(container);
+const sut = new RemoveUserUsecase(container);
 
-describe("Remove Exercise Usecase Test", () => {
+describe("Remove User Usecase Test", () => {
   test("should execute", async () => {
     const date = new Date();
 
@@ -24,17 +24,22 @@ describe("Remove Exercise Usecase Test", () => {
 
     const removed = {
       id: 1,
-      question: "Exercise",
+      name: "User",
+      email: "user",
+      role: "admin",
+      password: "pass",
       created_at: date,
       updated_at: date,
     };
 
-    container.exerciseRepository.delete.mockResolvedValue(removed);
+    container.userRepository.delete.mockResolvedValue(removed);
 
     const usecaseResponse = await sut.execute(data);
     expect(usecaseResponse).toMatchObject({
       id: removed.id,
-      question: removed.question,
+      name: removed.name,
+      role: removed.role,
+      email: removed.email,
       created_at: removed.created_at,
     });
     expect(usecaseResponse).toHaveProperty("removed_at");

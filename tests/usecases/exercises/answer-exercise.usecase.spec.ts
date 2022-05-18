@@ -1,5 +1,5 @@
 import AnswerExerciseUsecase from "../../../src/domain/usecases/exercises/answer-exercise/answer-exercise.usecase";
-import { NotFoundError } from "../../../src/presentation/errors/NotFoundError";
+import { NotFoundException } from "../../../src/presentation/exceptions/not-found";
 
 const container = {
   exerciseRepository: {
@@ -9,6 +9,7 @@ const container = {
     findById: jest.fn(),
     delete: jest.fn(),
     mapToEntity: jest.fn(),
+    getRandom: jest.fn(),
   },
   gameExerciseResultRepository: {
     create: jest.fn(),
@@ -32,6 +33,9 @@ const sut = new AnswerExerciseUsecase(container);
 
 describe("Answer Exercise Usecase Test", () => {
   test("should execute", async () => {
+    container.gameResultRepository.findById.mockResolvedValue({ id: 1 });
+    container.exerciseRepository.findById.mockResolvedValue({ id: 1 });
+
     const date = new Date();
 
     const data = {
@@ -50,11 +54,12 @@ describe("Answer Exercise Usecase Test", () => {
     };
 
     container.gameExerciseResultRepository.create.mockResolvedValue(inserted);
+    container.exerciseRepository.getRandom.mockResolvedValue({ id: 1 });
 
     const usecaseResponse = await sut.execute(data);
     expect(usecaseResponse).toMatchObject({
       id: 1,
-      next_exercise: "/exercises/3",
+      next_exercise: "/exercises/1",
     });
   });
 
@@ -70,7 +75,7 @@ describe("Answer Exercise Usecase Test", () => {
     try {
       await sut.execute(data);
     } catch (err) {
-      expect(err).toBeInstanceOf(NotFoundError);
+      expect(err).toBeInstanceOf(NotFoundException);
     }
   });
 
@@ -86,7 +91,7 @@ describe("Answer Exercise Usecase Test", () => {
     try {
       await sut.execute(data);
     } catch (err) {
-      expect(err).toBeInstanceOf(NotFoundError);
+      expect(err).toBeInstanceOf(NotFoundException);
     }
   });
 });
