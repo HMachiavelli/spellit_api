@@ -20,6 +20,7 @@ export class AnswerExerciseController {
   ): Promise<Response> {
     try {
       const input: AnswerExerciseInput = request.body;
+      input.exercise_id = +request.params.id;
 
       const output: AnswerExerciseOutput = await this.answerExercise.execute(
         input

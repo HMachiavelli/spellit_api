@@ -36,13 +36,18 @@ export class ExerciseRepository implements Repository {
       where: {
         id,
       },
+      include: {
+        game: true,
+        level: true,
+        answer_type: true,
+      },
     });
 
     return this.mapToEntity(found);
   }
 
   public async getRandom(options: any): Promise<Exercise> {
-    const count = await this.prismaClient.exercise.count();
+    const count = await this.prismaClient.exercise.count(options);
     const skip = Math.floor(Math.random() * count);
 
     options = {
@@ -51,6 +56,11 @@ export class ExerciseRepository implements Repository {
       skip,
       orderBy: {
         id: "desc",
+      },
+      include: {
+        game: true,
+        level: true,
+        answer_type: true,
       },
     };
 
@@ -79,6 +89,11 @@ export class ExerciseRepository implements Repository {
       orderBy,
       skip: options.offset,
       take: options.limit,
+      include: {
+        game: true,
+        level: true,
+        answer_type: true,
+      },
     });
 
     const exercises: Exercise[] = found.map((reg: any) => {

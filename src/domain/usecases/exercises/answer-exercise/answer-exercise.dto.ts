@@ -6,5 +6,7 @@ export type AnswerExerciseInput = {
 
 export type AnswerExerciseOutput = {
   id: number;
-  next_exercise: string;
+  next_exercise?: number;
+  finished: boolean;
+  total_score?: number;
 };

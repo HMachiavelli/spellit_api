@@ -20,34 +20,62 @@ export default class AddExercise {
   }
 
   public async execute(input: AnswerExerciseInput) {
-    const exercise: Exercise = this.exerciseRepository.findById(
-      input.exercise_id
+    const exercise: Exercise = await this.exerciseRepository.findById(
+      +input.exercise_id
     );
     if (!exercise) {
       throw new NotFoundException(`Exercise ${input.exercise_id} not found`);
     }
 
-    if (!this.gameResultRepository.findById(input.game_result_id)) {
+    const gameResult = await this.gameResultRepository.findById(
+      +input.game_result_id
+    );
+    if (!gameResult) {
       throw new NotFoundException(`Game ${input.game_result_id} not found`);
     }
 
+    const score = this.calculateScore(input.received_answer, exercise.answer);
     let exerciseResult: Prisma.GameExerciseResultCreateInput = {
+      score,
       received_answer: input.received_answer,
-      score: 50,
       created_at: new Date(),
-      game_result: { connect: { id: input.game_result_id } },
-      exercise: { connect: { id: input.exercise_id } },
+      game_result: { connect: { id: +input.game_result_id } },
+      exercise: { connect: { id: +input.exercise_id } },
     };
 
     const response: AnswerExerciseOutput =
       await this.gameExerciseResultRepository.create(exerciseResult);
 
-    const nextExercise: Exercise = await this.exerciseRepository.getRandom({
-      where: { game_id: exercise.game_id, level_id: exercise.level_id },
+    let finished = true;
+    if (gameResult.current_exercise + 1 <= 10) {
+      finished = false;
+      const nextExercise: Exercise = await this.exerciseRepository.getRandom({
+        where: {
+          game_id: +exercise.game.id,
+          level_id: +exercise.level.id,
+          NOT: { id: input.exercise_id },
+        },
+      });
+
+      response.next_exercise = nextExercise.id;
+    }
+
+    const newScore = Math.ceil(+gameResult.total_score + score);
+
+    await this.gameResultRepository.update({
+      id: gameResult.id,
+      total_score: newScore,
+      current_exercise: gameResult.current_exercise + 1,
+      finished_at: finished ? new Date() : null,
     });
 
-    response.next_exercise = `/exercises/${nextExercise.id}`;
+    response.finished = finished;
 
     return response;
+  }
+
+  //TODO: match das strings
+  private calculateScore(received: string, expected: string): number {
+    return 75;
   }
 }

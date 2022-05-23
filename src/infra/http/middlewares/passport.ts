@@ -7,6 +7,7 @@ import authMiddleware from "./auth";
 declare global {
   namespace Express {
     interface User {
+      id: number;
       role: string;
     }
   }

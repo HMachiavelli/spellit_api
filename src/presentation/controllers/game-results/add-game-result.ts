@@ -20,6 +20,7 @@ export class AddGameResultController {
   ): Promise<Response> {
     try {
       const input: AddGameResultInput = request.body;
+      input.user_id = request.user.id;
 
       const output: AddGameResultOutput = await this.addGameResult.execute(
         input

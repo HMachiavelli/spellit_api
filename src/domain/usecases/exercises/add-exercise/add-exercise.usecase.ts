@@ -17,9 +17,9 @@ export default class AddExercise {
       answer: input.answer.trim(),
       active: input.active,
       created_at: new Date(),
-      game: { connect: { id: input.game_id } },
-      level: { connect: { id: input.level_id } },
-      answer_type: { connect: { id: input.answer_type_id } },
+      game: { connect: { id: +input.game_id } },
+      level: { connect: { id: +input.level_id } },
+      answer_type: { connect: { id: +input.answer_type_id } },
     };
 
     const response: AddExerciseOutput = await this.exerciseRepository.create(

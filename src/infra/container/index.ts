@@ -27,6 +27,8 @@ import UpdateExercise from "@/usecases/exercises/update-exercise/update-exercise
 
 import { AddGameResultController } from "@/controllers/game-results/add-game-result";
 import AddGameResult from "@/usecases/game-results/add-game-result/add-game-result.usecase";
+import { GetGameResultController } from "@/controllers/game-results/get-game-result";
+import GetGameResult from "@/usecases/game-results/get-game-result/get-game-result.usecase";
 
 import { AddUserController } from "@/controllers/users";
 import AddUser from "@/usecases/users/add-user/add-user.usecase";
@@ -86,6 +88,9 @@ export interface AppContainer {
   addGameResultController?: AddGameResultController;
   addGameResult?: AddGameResult;
 
+  getGameResultController?: GetGameResultController;
+  getGameResult?: GetGameResult;
+
   addUserController?: AddUserController;
   addUser?: AddUser;
 
@@ -118,7 +123,11 @@ export interface AppContainer {
 
 export const registerModules = (container: AwilixContainer) => {
   container.register({
-    prismaClient: asValue(new PrismaClient()),
+    prismaClient: asValue(
+      new PrismaClient({
+        log: ["query", "info", "warn", "error"],
+      })
+    ),
 
     addLevelController: asClass(AddLevelController).scoped(),
     addLevel: asClass(AddLevel).scoped(),
@@ -155,6 +164,9 @@ export const registerModules = (container: AwilixContainer) => {
 
     addGameResultController: asClass(AddGameResultController).scoped(),
     addGameResult: asClass(AddGameResult).scoped(),
+
+    getGameResultController: asClass(GetGameResultController).scoped(),
+    getGameResult: asClass(GetGameResult).scoped(),
 
     addUserController: asClass(AddUserController).scoped(),
     addUser: asClass(AddUser).scoped(),

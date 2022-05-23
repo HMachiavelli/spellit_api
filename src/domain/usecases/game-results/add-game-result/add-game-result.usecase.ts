@@ -43,7 +43,7 @@ export default class AddGameResult {
       where: { game_id: input.game_id, level_id: input.level_id },
     });
 
-    response.first_exercise_uri = `/exercises/${firstExercise.id}`;
+    response.first_exercise_id = firstExercise.id;
 
     return response;
   }

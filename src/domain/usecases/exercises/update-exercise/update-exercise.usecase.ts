@@ -33,15 +33,15 @@ export default class UpdateExercise {
     }
 
     if (input.game_id) {
-      exercise.game = { connect: { id: input.game_id } };
+      exercise.game = { connect: { id: +input.game_id } };
     }
 
     if (input.level_id) {
-      exercise.level = { connect: { id: input.level_id } };
+      exercise.level = { connect: { id: +input.level_id } };
     }
 
     if (input.answer_type_id) {
-      exercise.answer_type = { connect: { id: input.answer_type_id } };
+      exercise.answer_type = { connect: { id: +input.answer_type_id } };
     }
 
     exercise = await this.exerciseRepository.update(exercise);

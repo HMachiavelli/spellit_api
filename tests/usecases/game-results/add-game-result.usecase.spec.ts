@@ -1,5 +1,5 @@
-import AddGameResultUsecase from "../../../../src/domain/usecases/game-results/add-game-result/add-game-result.usecase";
-import { NotFoundException } from "../../../../src/presentation/exceptions/not-found";
+import AddGameResultUsecase from "../../../src/domain/usecases/game-results/add-game-result/add-game-result.usecase";
+import { NotFoundException } from "../../../src/presentation/exceptions/not-found";
 
 const container = {
   gameResultRepository: {

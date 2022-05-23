@@ -13,5 +13,5 @@ export type AddGameResultOutput = {
   game: object;
   level: object;
   user: object;
-  first_exercise_uri: string;
+  first_exercise_id: number;
 };

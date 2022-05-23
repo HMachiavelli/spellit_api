@@ -1,7 +1,6 @@
 import { AwilixContainer } from "awilix";
 import { Router } from "express";
 import passport from "passport";
-import onlyAdminMiddleware from "../middlewares/admin-only";
 
 export const gameResultRoutes = (
   router: Router,
@@ -12,6 +11,14 @@ export const gameResultRoutes = (
     passport.authenticate("bearer"),
     (req, res, next) => {
       container.resolve("addGameResultController").handle(req, res, next);
+    }
+  );
+
+  router.get(
+    "/game-result/:id",
+    passport.authenticate("bearer"),
+    (req, res, next) => {
+      container.resolve("getGameResultController").handle(req, res, next);
     }
   );
 };
