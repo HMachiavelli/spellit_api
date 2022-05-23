@@ -5,6 +5,9 @@ export default (err: any, req: any, res: any, next: any) => {
   let code = 500;
   if (err instanceof UnauthorizedException) {
     code = 401;
+
+    res.status(code).send("Unauthorized");
+    return;
   }
 
   if (err instanceof NotFoundException) {

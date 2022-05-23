@@ -34,7 +34,6 @@ model Game {
   language    Language     @relation(fields: [language_id], references: [id])
   language_id Int
   results     GameResult[]
-  levels      Level[]
 
   @@map("games")
 }
@@ -66,9 +65,7 @@ model Level {
   active     Boolean  @default(true)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  game       Game     @relation(fields: [game_id], references: [id])
-  game_id    Int
-  exercise   Exercise[]
+  exercises  Exercise[]
   game_results GameResult[]
 
   @@map("levels")

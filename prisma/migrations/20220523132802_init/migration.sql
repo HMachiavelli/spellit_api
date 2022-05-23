@@ -48,7 +48,6 @@ CREATE TABLE `levels` (
     `active` BOOLEAN NOT NULL DEFAULT true,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
-    `game_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -197,9 +196,6 @@ ALTER TABLE `exercises` ADD CONSTRAINT `exercises_answer_type_id_fkey` FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE `exercises` ADD CONSTRAINT `exercises_question_media_id_fkey` FOREIGN KEY (`question_media_id`) REFERENCES `medias`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `levels` ADD CONSTRAINT `levels_game_id_fkey` FOREIGN KEY (`game_id`) REFERENCES `games`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `game_results` ADD CONSTRAINT `game_results_game_id_fkey` FOREIGN KEY (`game_id`) REFERENCES `games`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
