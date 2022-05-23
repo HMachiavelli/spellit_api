@@ -63,7 +63,7 @@ export class UserRepository {
 
     if (options.search && options.search !== "") {
       where = {
-        title: {
+        name: {
           contains: options.search,
         },
       };
