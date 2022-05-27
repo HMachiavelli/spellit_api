@@ -13,14 +13,9 @@ export const levelRoutes = (router: Router, container: AwilixContainer) => {
     }
   );
 
-  router.get(
-    "/levels",
-    passport.authenticate("bearer"),
-    onlyAdminMiddleware,
-    (req, res, next) => {
-      container.resolve("getLevelsController").handle(req, res, next);
-    }
-  );
+  router.get("/levels", passport.authenticate("bearer"), (req, res, next) => {
+    container.resolve("getLevelsController").handle(req, res, next);
+  });
 
   router.get(
     "/levels/:id",
