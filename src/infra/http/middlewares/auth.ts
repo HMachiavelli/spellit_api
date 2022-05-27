@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/infra/db/client";
 
 export default async (token: string, done: any) => {
-  const prisma = new PrismaClient();
   const userToken = await prisma.userAccessToken.findFirst({
     include: {
       user: true,
