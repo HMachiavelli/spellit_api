@@ -48,9 +48,11 @@ import * as Repositories from "@/repositories/index";
 import * as RepositoryProtocols from "@/protocols/index";
 
 import { BasicParser, IBasicParser } from "@/infra/http/utils/basic-parser";
+import stringSimilarity from "string-similarity";
 
 export interface AppContainer {
   prismaClient?: any;
+  stringSimilarity: typeof stringSimilarity;
 
   addLevelController?: AddLevelController;
   addLevel?: AddLevel;
@@ -123,11 +125,9 @@ export interface AppContainer {
 
 export const registerModules = (container: AwilixContainer) => {
   container.register({
-    prismaClient: asValue(
-      new PrismaClient({
-        log: ["query", "info", "warn", "error"],
-      })
-    ),
+    prismaClient: asValue(new PrismaClient()),
+
+    stringSimilarity: asValue(stringSimilarity),
 
     addLevelController: asClass(AddLevelController).scoped(),
     addLevel: asClass(AddLevel).scoped(),

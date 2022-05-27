@@ -21,6 +21,7 @@
     "@types/passport": "^1.0.7",
     "@types/passport-http-bearer": "^1.0.37",
     "@types/request-ip": "^0.0.37",
+    "@types/string-similarity": "^4.0.0",
     "nodemon": "^2.0.15",
     "rimraf": "^3.0.2",
     "ts-jest": "^28.0.1",
@@ -39,7 +40,8 @@
     "passport": "^0.5.2",
     "passport-http-bearer": "^1.0.1",
     "prisma": "^3.11.1",
-    "request-ip": "^2.1.3"
+    "request-ip": "^2.1.3",
+    "string-similarity": "^4.0.4"
   },
   "_moduleAliases": {
     "@/infra": "./dist/infra",

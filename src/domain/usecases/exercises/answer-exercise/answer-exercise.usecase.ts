@@ -2,18 +2,21 @@ import {
   AnswerExerciseInput,
   AnswerExerciseOutput,
 } from "./answer-exercise.dto";
-import { AppContainer } from "infra/container";
+import { AppContainer } from "@/infra/container";
 import { Prisma } from "@prisma/client";
 import { NotFoundException } from "../../../../presentation/exceptions/not-found";
 import * as RepositoryProtocols from "@/protocols/index";
 import Exercise from "@/entities/exercise";
+import stringSimilarity from "string-similarity";
 
-export default class AddExercise {
+export default class AnswerExercise {
+  private stringSimilarity: typeof stringSimilarity;
   private exerciseRepository: RepositoryProtocols.IExerciseRepository;
   private gameResultRepository: RepositoryProtocols.IGameResultRepository;
   private gameExerciseResultRepository: RepositoryProtocols.IGameExerciseResultRepository;
 
   constructor(container: AppContainer) {
+    this.stringSimilarity = container.stringSimilarity;
     this.exerciseRepository = container.exerciseRepository;
     this.gameResultRepository = container.gameResultRepository;
     this.gameExerciseResultRepository = container.gameExerciseResultRepository;
@@ -74,8 +77,12 @@ export default class AddExercise {
     return response;
   }
 
-  //TODO: match das strings
   private calculateScore(received: string, expected: string): number {
-    return 75;
+    const score: number = stringSimilarity.compareTwoStrings(
+      received,
+      expected
+    );
+
+    return Math.ceil(score * 100);
   }
 }
