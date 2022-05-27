@@ -1,5 +1,5 @@
 import { asClass, asValue, AwilixContainer } from "awilix";
-import { PrismaClient } from "@prisma/client";
+import PrismaClient from "@/infra/db/client";
 
 import { AddLevelController } from "@/controllers/levels";
 import AddLevel from "@/usecases/levels/add-level/add-level.usecase";
@@ -125,7 +125,7 @@ export interface AppContainer {
 
 export const registerModules = (container: AwilixContainer) => {
   container.register({
-    prismaClient: asValue(new PrismaClient()),
+    prismaClient: asValue(PrismaClient),
 
     stringSimilarity: asValue(stringSimilarity),
 
