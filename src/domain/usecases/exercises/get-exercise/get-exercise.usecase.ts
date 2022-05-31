@@ -2,6 +2,7 @@ import { GetExerciseInput, GetExerciseOutput } from "./get-exercise.dto";
 import { AppContainer } from "infra/container";
 import Exercise from "@/entities/exercise";
 import { Repository } from "domain/protocols/repository";
+import { NotFoundException } from "../../../../presentation/exceptions/not-found";
 
 export default class GetExercise {
   private exerciseRepository: Repository;
@@ -13,7 +14,7 @@ export default class GetExercise {
   public async execute(input: GetExerciseInput) {
     const exercise: Exercise = await this.exerciseRepository.findById(input.id);
     if (!exercise) {
-      throw new Error("Not found");
+      throw new NotFoundException("Not found");
     }
 
     const response: GetExerciseOutput = {

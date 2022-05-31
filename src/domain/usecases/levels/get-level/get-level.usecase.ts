@@ -1,7 +1,8 @@
 import { GetLevelInput, GetLevelOutput } from "./get-level.dto";
 import { AppContainer } from "infra/container";
 import Level from "@/entities/level";
-import { Repository } from "domain/protocols/repository";
+import { Repository } from "@/protocols/repository";
+import { NotFoundException } from "../../../../presentation/exceptions/not-found";
 
 export default class GetLevel {
   private levelRepository: Repository;
@@ -13,7 +14,7 @@ export default class GetLevel {
   public async execute(input: GetLevelInput) {
     const level: Level = await this.levelRepository.findById(input.id);
     if (!level) {
-      throw new Error("Not found");
+      throw new NotFoundException("Not found");
     }
 
     const response: GetLevelOutput = {
